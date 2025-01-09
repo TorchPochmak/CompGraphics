@@ -223,7 +223,7 @@ Vec3 trace(
     bool hit = false;
     float closestT = std::numeric_limits<float>::max();
 
-    // Проверка пересечений с обычными сферами
+
     for (const auto& sphere : spheres) {
         HitRecord tempHit;
         if (sphere.intersect(ray, tempHit) && tempHit.t < closestT) {
@@ -233,19 +233,19 @@ Vec3 trace(
         }
     }
 
-    // Проверка пересечений с черными сферами (spheres2)
+
     for (const auto& sphere2 : spheres2) {
         HitRecord tempHit;
         if (sphere2.intersect(ray, tempHit) && tempHit.t < closestT) {
-            return Vec3(0, 0, 0);  // Возвращаем черный цвет, если происходит пересечение.
+            return Vec3(0, 0, 0);  
         }
     }
 
-    // Проверка пересечений с белыми сферами (spheres3)
+
     for (const auto& sphere3 : spheres3) {
         HitRecord tempHit;
         if (sphere3.intersect(ray, tempHit) && tempHit.t < closestT) {
-            return Vec3(1, 1, 1);  // Возвращаем белый цвет, если происходит пересечение.
+            return Vec3(1, 1, 1);  
         }
     }
 
@@ -357,21 +357,20 @@ int main() {
 
     Plane floor(Vec3(0, -100, 0), Vec3(0, 1, 0));
 
-    // Initialize the window with SFML
+
     sf::RenderWindow window(sf::VideoMode(width, height), "Ray Tracing Scene");
 
-    // Create a texture and a sprite to display the image
     sf::Texture texture;
     texture.create(width, height);
     sf::Sprite sprite(texture);
 
-    std::vector<sf::Uint8> pixels(width * height * 4);  // RGBA format
+    std::vector<sf::Uint8> pixels(width * height * 4);  
 
-    // Render the scene
+
     for (int y = 0; y < height; ++y) {
       for (int x = 0; x < width; ++x) {
           float u = float(x) / float(width);
-          // Инвертируем координату y, чтобы перевернуть изображение
+
           float v = float(height - y - 1) / float(height);
 
           Vec3 origin(0, 0, 0);
@@ -380,7 +379,6 @@ int main() {
 
           Vec3 color = trace(ray, spheres, spheres2, spheres3, floor, 0, 5, 20);
 
-          // Преобразуем цвет в диапазон [0, 255]
           int r = std::min(255, int(color.x * 255));
           int g = std::min(255, int(color.y * 255));
           int b = std::min(255, int(color.z * 255));
@@ -388,7 +386,7 @@ int main() {
           pixels[(y * width + x) * 4] = r;
           pixels[(y * width + x) * 4 + 1] = g;
           pixels[(y * width + x) * 4 + 2] = b;
-          pixels[(y * width + x) * 4 + 3] = 255;  // Альфа-канал
+          pixels[(y * width + x) * 4 + 3] = 255;  
       }
     }
 

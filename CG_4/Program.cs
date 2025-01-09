@@ -51,7 +51,6 @@ public class Pyramid
     private int vao;
     private int vbo;
 
-    // Измените количество элементов на размеры одного набора данных 
     private readonly static float[] PyramidVertices = {
         // Positions          // Normals            // Texture Coords
         -0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,   1.0f, 0.0f,
@@ -94,15 +93,15 @@ public class Pyramid
         GL.BindBuffer(BufferTarget.ArrayBuffer, vbo);
         GL.BufferData(BufferTarget.ArrayBuffer, PyramidVertices.Length * sizeof(float), PyramidVertices, BufferUsageHint.StaticDraw);
 
-        // Позиция атрибута вершины
+
         GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, 8 * sizeof(float), 0);
         GL.EnableVertexAttribArray(0);
 
-        // Нормали
+
         GL.VertexAttribPointer(1, 3, VertexAttribPointerType.Float, false, 8 * sizeof(float), 3 * sizeof(float));
         GL.EnableVertexAttribArray(1);
 
-        // Текстурные координаты
+
         GL.VertexAttribPointer(2, 2, VertexAttribPointerType.Float, false, 8 * sizeof(float), 6 * sizeof(float));
         GL.EnableVertexAttribArray(2);
 
@@ -130,108 +129,14 @@ public class Spotlight
     public float CutOff { get; set; }
     public float OuterCutOff { get; set; }
 
-    // Добавим конструктор, если необходимо
+
     public Spotlight(float cutOff, float outerCutOff)
     {
         CutOff = (float)MathHelper.Cos(MathHelper.DegreesToRadians(cutOff));
         OuterCutOff = (float)MathHelper.Cos(MathHelper.DegreesToRadians(outerCutOff));
     }
 }
-//public class MainApp : GameWindow
-//{
-//    private ShaderProgram shader;
-//    private Pyramid pyramid;
-//    private Spotlight spotlight;
-//    private OrbitCamera camera;
 
-//    public MainApp(GameWindowSettings settings, NativeWindowSettings nativeSettings)
-//        : base(settings, nativeSettings)
-//    {
-//    }
-
-//    protected override void OnLoad()
-//    {
-//        base.OnLoad();
-//        GL.ClearColor(0.1f, 0.1f, 0.1f, 1.0f);
-//        GL.Enable(EnableCap.DepthTest);
-
-//        string vertexShaderSource = @"
-//            #version 330 core
-//            layout(location = 0) in vec3 position;
-
-//            uniform mat4 model;
-//            uniform mat4 view;
-//            uniform mat4 projection;
-//            uniform vec3 lightPos;
-//            uniform vec3 viewPos;
-//            uniform vec3 lightDir;
-//            uniform float cutOff;
-//            uniform float outerCutOff;
-
-//            void main()
-//            {
-//                gl_Position = projection * view * model * vec4(position, 1.0);
-//            }
-//        ";
-
-//        string fragmentShaderSource = @"
-//            #version 330 core
-//            out vec4 FragColor;
-
-//            uniform vec3 lightPos;
-//            uniform vec3 viewPos;
-//            uniform vec3 lightDir;
-//            uniform float cutOff;
-//            uniform float outerCutOff;
-
-//            void main()
-//            {
-//                vec3 lightColor = vec3(1.0f);
-//                FragColor = vec4(lightColor, 1.0f); // Replace this with your spotlight calculation
-//            }
-//        ";
-
-//        shader = new ShaderProgram(vertexShaderSource, fragmentShaderSource);
-//        pyramid = new Pyramid(shader);
-//        spotlight = new Spotlight(12.5f, 17.5f);
-//        camera = new OrbitCamera(5.0f, Vector3.Zero);
-//    }
-
-//    protected override void OnUpdateFrame(FrameEventArgs e)
-//    {
-//        base.OnUpdateFrame(e);
-
-//        // Обновление позиции и направления прожектора
-//        // Возможность изменения направления и угла прожектора
-//    }
-
-//    protected override void OnRenderFrame(FrameEventArgs e)
-//    {
-//        base.OnRenderFrame(e);
-//        GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
-
-//        Matrix4 view = camera.GetViewMatrix();
-//        Matrix4 projection = camera.GetProjectionMatrix(Size.X, Size.Y);
-//        // Установим позиции света, камеры, направления и значений cut-off
-//        shader.Use();
-//        GL.Uniform3(GL.GetUniformLocation(shader.ProgramID, "lightPos"), spotlight.Position);
-//        GL.Uniform3(GL.GetUniformLocation(shader.ProgramID, "viewPos"), camera.Position);
-//        GL.Uniform3(GL.GetUniformLocation(shader.ProgramID, "lightDir"), spotlight.Direction);
-//        GL.Uniform1(GL.GetUniformLocation(shader.ProgramID, "cutOff"), spotlight.CutOff);
-//        GL.Uniform1(GL.GetUniformLocation(shader.ProgramID, "outerCutOff"), spotlight.OuterCutOff);
-
-//        // Отрисовка пирамиды
-//        pyramid.Draw(view, projection);
-
-//        Context.SwapBuffers();
-//    }
-
-//    protected override void OnResize(ResizeEventArgs e)
-//    {
-//        base.OnResize(e);
-//        GL.Viewport(0, 0, Size.X, Size.Y);
-//    }
-//}
 public class MainApp : GameWindow
 {
     private Stopwatch _timer = new Stopwatch();
@@ -248,7 +153,7 @@ public class MainApp : GameWindow
 
     protected override void OnLoad()
     {
-        _timer.Start(); // Запускаем таймер при загрузке
+        _timer.Start(); 
         base.OnLoad();
         GL.ClearColor(0.1f, 0.1f, 0.1f, 1.0f);
         GL.Enable(EnableCap.DepthTest);
@@ -320,8 +225,7 @@ void main()
             Close();
         }
 
-        // Управление позицией прожектора
-        // Обработка вращения камеры вокруг цели
+
         if (KeyboardState.IsKeyDown(Keys.A))
         {
             camera.ProcessMouseMovement(rotationSpeed, 0);
@@ -339,9 +243,7 @@ void main()
             camera.ProcessMouseMovement(0, -rotationSpeed);
         }
         float speed = 0.1f;
-        // Изменение углов прожектора
-        // Уменьшение/увеличение углов плавно с шагом 0.01 радиана в секунду
-        float cutoffAdjustment = 0.01f * (float)e.Time; // Угол изменяется на 0.01 радиан в секунду
+        float cutoffAdjustment = 0.01f * (float)e.Time; 
 
         if (KeyboardState.IsKeyDown(Keys.Z))
         {
@@ -359,7 +261,6 @@ void main()
         {
             spotlight.OuterCutOff = MathHelper.Clamp(spotlight.OuterCutOff + MathHelper.DegreesToRadians(0.01f), spotlight.CutOff + MathHelper.DegreesToRadians(1.0f), MathHelper.DegreesToRadians(60.0f));
         }
-        // Вращение прожектора
         if (KeyboardState.IsKeyDown(Keys.Left))
         {
             spotlight.Direction = Vector3.Transform(spotlight.Direction, Quaternion.FromAxisAngle(Vector3.UnitY, MathHelper.DegreesToRadians(0.01f)));
@@ -377,7 +278,6 @@ void main()
             spotlight.Direction = Vector3.Transform(spotlight.Direction, Quaternion.FromAxisAngle(Vector3.UnitX, MathHelper.DegreesToRadians(-0.01f)));
         }
 
-        // Каждые 5 секунд выводим позиции камеры и света
         if (_timer.ElapsedMilliseconds >= 1000)
         {
             Console.WriteLine("Cam: " + camera.Position);
@@ -395,15 +295,13 @@ void main()
         Matrix4 projection = camera.GetProjectionMatrix(Size.X, Size.Y);
 
         shader.Use();
-
-        // Обновите позиции и другие параметры освещения
         GL.Uniform3(GL.GetUniformLocation(shader.ProgramID, "lightPos"), spotlight.Position);
         GL.Uniform3(GL.GetUniformLocation(shader.ProgramID, "viewPos"), camera.Position);
         GL.Uniform3(GL.GetUniformLocation(shader.ProgramID, "lightDir"), spotlight.Direction);
         GL.Uniform1(GL.GetUniformLocation(shader.ProgramID, "cutOff"), spotlight.CutOff);
         GL.Uniform1(GL.GetUniformLocation(shader.ProgramID, "outerCutOff"), spotlight.OuterCutOff);
-        GL.Uniform3(GL.GetUniformLocation(shader.ProgramID, "lightColor"), new Vector3(1.0f, 1.0f, 1.0f)); // Белый свет
-        GL.Uniform3(GL.GetUniformLocation(shader.ProgramID, "objectColor"), new Vector3(1.0f, 0.5f, 0.31f)); // Цвет объекта
+        GL.Uniform3(GL.GetUniformLocation(shader.ProgramID, "lightColor"), new Vector3(1.0f, 1.0f, 1.0f));
+        GL.Uniform3(GL.GetUniformLocation(shader.ProgramID, "objectColor"), new Vector3(1.0f, 0.5f, 0.31f));
 
         pyramid.Draw(Matrix4.Identity, view, projection);
 
@@ -428,7 +326,7 @@ public class OrbitCamera
     {
         this.target = target;
         distance = initialDistance;
-        yaw = -90.0f; // начальный угол поворота
+        yaw = -90.0f; 
         pitch = 0.0f;
         UpdatePosition();
     }

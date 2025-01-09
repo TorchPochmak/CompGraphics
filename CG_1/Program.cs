@@ -26,16 +26,15 @@ public class Polygon
 
     private void InitializeVertices(int sides)
     {
-        // Для замыкания нам нужно sides + 2: центральная точка + количество граней + 1 для замыкания
         vertexCount = sides + 2;
         vertices = new float[vertexCount * 3];
 
         float angleStep = 360.0f / sides;
-        vertices[0] = 0.0f;  // Центр многоугольника
+        vertices[0] = 0.0f; 
         vertices[1] = 0.0f;
         vertices[2] = 0.0f;
 
-        for (int i = 0; i <= sides; i++)  // <= добавляет еще одну вершину для замыкания
+        for (int i = 0; i <= sides; i++) 
         {
             float angle = MathHelper.DegreesToRadians(i * angleStep);
             vertices[(i + 1) * 3] = MathF.Cos(angle);
@@ -142,13 +141,11 @@ public class MainWindow : GameWindow
         float rotationSpeed = MathHelper.PiOver4 * (float)e.Time * 5f;
         float scaleSpeed = 2f * (float)e.Time;
 
-        // Выход по ESC
         if (keyboardState.IsKeyDown(Keys.Escape))
         {
             Close();
         }
 
-        // Обновление позиции из-за ручного управления
         if (keyboardState.IsKeyDown(Keys.Left))
             manualOffset.X -= moveSpeed;
         if (keyboardState.IsKeyDown(Keys.Right))
@@ -168,13 +165,12 @@ public class MainWindow : GameWindow
         if (keyboardState.IsKeyDown(Keys.S))
             polygon.Scale = Math.Max(0.1f, polygon.Scale - scaleSpeed);
 
-        // Анимация: обновление позиции многоугольника для движения по кругу
         trajectoryAngle += (float)e.Time;
         polygon.Position = new Vector3(
             MathF.Cos(trajectoryAngle) * trajectoryRadius,
             MathF.Sin(trajectoryAngle) * trajectoryRadius,
             0.0f
-        ) + manualOffset; // Используем смещение, чтобы перемещать анимацию
+        ) + manualOffset; 
     }
 
     protected override void OnRenderFrame(FrameEventArgs e)

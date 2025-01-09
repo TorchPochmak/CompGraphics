@@ -122,7 +122,7 @@ public class LateralCamera
     {
         radius = initialRadius;
         Height = initialHeight;
-        angle = 0.0f; // Изначальный угол на 0 (смотрим в сторону положительного X)
+        angle = 0.0f; 
         UpdatePosition();
     }
 
@@ -135,24 +135,24 @@ public class LateralCamera
 
     public void Update(float deltaTime, KeyboardState keyboardState)
     {
-        float angleSpeed = MathHelper.DegreesToRadians(30.0f); // Скорость изменения угла
-        const float radiusSpeed = 1.0f; // Скорость изменения радиуса
+        float angleSpeed = MathHelper.DegreesToRadians(30.0f); 
+        const float radiusSpeed = 1.0f; 
 
-        // Управление высотой камеры независимо
+
         if (keyboardState.IsKeyDown(Keys.W))
             Height += radiusSpeed * deltaTime;
         if (keyboardState.IsKeyDown(Keys.S))
             Height -= radiusSpeed * deltaTime;
 
-        // Управление углом, отвечающим за боковое движение
+
         if (keyboardState.IsKeyDown(Keys.A))
             angle -= angleSpeed * deltaTime;
         if (keyboardState.IsKeyDown(Keys.D))
             angle += angleSpeed * deltaTime;
 
-        // Управление радиусом
+
         if (keyboardState.IsKeyDown(Keys.Up))
-            radius = MathF.Max(radius - radiusSpeed * deltaTime, 0.1f); // Ограничение на минимальный радиус
+            radius = MathF.Max(radius - radiusSpeed * deltaTime, 0.1f); 
         if (keyboardState.IsKeyDown(Keys.Down))
             radius += radiusSpeed * deltaTime;
 
@@ -161,7 +161,6 @@ public class LateralCamera
 
     private void UpdatePosition()
     {
-        // Управление X, Z на основе фиксированной дуги на текущем угле
         Position = new Vector3(
             MathF.Cos(angle) * radius,
             Height,
@@ -232,12 +231,12 @@ public class Cylinder
         float angleStep = 2 * MathF.PI / segments;
         int vertexCount = 0;
 
-        // Верхняя и нижняя крышки
-        for (int i = 0; i < 2; i++) // 0 - нижняя, 1 - верхняя
+
+        for (int i = 0; i < 2; i++)
         {
             float y = (i == 0) ? -height / 2 : height / 2;
 
-            // Центр крышки
+
             vertices.AddRange(new float[] { 0f, y, 0f });
 
             for (int j = 0; j < segments; j++)
@@ -253,7 +252,7 @@ public class Cylinder
                     indices.Add((uint)(vertexCount + j + 1));
                     indices.Add((uint)(vertexCount + j + 2));
                 }
-                else // Замыкаем крышку
+                else 
                 {
                     indices.Add((uint)(vertexCount));
                     indices.Add((uint)(vertexCount + j + 1));
@@ -264,16 +263,15 @@ public class Cylinder
             vertexCount += segments + 1;
         }
 
-// Боковая поверхность
         for (int j = 0; j < segments; j++)
         {
             float angle = j * angleStep;
             float x = MathF.Cos(angle) * radius;
             float z = MathF.Sin(angle) * radius;
 
-            // нижняя вершина боковой грани
+
             vertices.AddRange(new float[] { x, -height / 2, z });
-            // верхняя вершина боковой грани
+
             vertices.AddRange(new float[] { x, height / 2, z });
 
             int lowerVertex = vertexCount + 2 * j;
@@ -287,7 +285,7 @@ public class Cylinder
                 indices.AddRange(new uint[] { (uint)lowerVertex, (uint)nextLowerVertex, (uint)upperVertex });
                 indices.AddRange(new uint[] { (uint)upperVertex, (uint)nextLowerVertex, (uint)nextUpperVertex });
             }
-            else // Замыкаем боковую поверхность
+            else 
             {
                 indices.AddRange(new uint[] { (uint)lowerVertex, (uint)vertexCount, (uint)upperVertex });
                 indices.AddRange(new uint[] { (uint)upperVertex, (uint)vertexCount, (uint)(vertexCount + 1) });
@@ -319,7 +317,7 @@ public class Cylinder
     {
         shader.Use();
 
-        Matrix4 model = Matrix4.Identity; // Мы не трансформируем цилиндр для простоты
+        Matrix4 model = Matrix4.Identity; 
         int modelLocation = GL.GetUniformLocation(shader.ProgramID, "model");
         GL.UniformMatrix4(modelLocation, false, ref model);
 

@@ -58,19 +58,19 @@ public class Sphere
     }
     private void BuildVertices(int sectorCount, int stackCount)
     {
-        float x, y, z, xy;                              // позиция вершин
+        float x, y, z, xy;                            
         float sectorStep = 2 * MathF.PI / sectorCount;
         float stackStep = MathF.PI / stackCount;
         float sectorAngle, stackAngle;
 
-        // Генерация вершин
+
         for (int i = 0; i <= stackCount; ++i)
         {
             stackAngle = MathF.PI / 2 - i * stackStep;  // от pi/2 до -pi/2
             xy = MathF.Cos(stackAngle);                // r * cos(u)
             z = MathF.Sin(stackAngle);                 // r * sin(u)
 
-            // Добавление сектора
+
             for (int j = 0; j <= sectorCount; ++j)
             {
                 sectorAngle = j * sectorStep;           // от 0 до 2pi
@@ -82,11 +82,11 @@ public class Sphere
             }
         }
 
-        // Генерация индексов
+
         for (int i = 0; i < stackCount; ++i)
         {
-            uint k1 = (uint)(i * (sectorCount + 1));     // начальная вершина каждой полосы
-            uint k2 = k1 + (uint)sectorCount + 1;      // начальная вершина следующей полосы
+            uint k1 = (uint)(i * (sectorCount + 1));    
+            uint k2 = k1 + (uint)sectorCount + 1;      
 
             for (int j = 0; j < sectorCount; ++j, ++k1, ++k2)
             {
